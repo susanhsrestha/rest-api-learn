@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Install the required packages
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Set the FLASK_APP environment variable to the path of your Flask app
 ENV FLASK_APP=./app.py
@@ -22,8 +22,5 @@ RUN flask db upgrade
 # CMD ["python", "initialize_database.py"]
 # Where "initialize_database.py" is a Python script that sets up your database if needed.
 
-# Expose port 5000
-EXPOSE 5000
-
 # Define the command to run your Flask application
-CMD ["flask", "run", "--host", "0.0.0.0"]
+CMD ["gunicorn","--bin","0.0.0.0:80","app:create_app()"]
